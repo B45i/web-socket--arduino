@@ -1,18 +1,13 @@
-const path = require('path')
-const app = require('express')();
+const express = require('express');
+const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
+
 const port = process.env.PORT || 3000;
-
-
-const publicDirectoryPath = path.join(__dirname, '../public');
-
-app.use(express.static(publicDirectoryPath);
-
+app.use(express.static('public'));
 
 let clients = 0;
-
 //Whenever someone connects this gets executed
 io.on('connection', function(socket) {
 	clients++;
