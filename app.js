@@ -1,12 +1,17 @@
 const express = require('express');
-const app = express();
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const socket = require('socket.io');
 
+const app = express();
 
 const port = process.env.PORT || 3000;
 app.use(express.static('public'));
 
+
+const server = app.listen(port, function () {
+	console.log(`listening on: ${port}`);
+})
+
+const io = socket(server);
 let clients = 0;
 //Whenever someone connects this gets executed
 io.on('connection', function(socket) {
@@ -30,7 +35,3 @@ io.on('connection', function(socket) {
 		io.sockets.emit('broadcast',{ description: clients + ' clients connected!'});
 	 });
 });
-
-http.listen(port, function () {
-	console.log(`listening on: ${port}`);
-})
